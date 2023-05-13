@@ -23,37 +23,22 @@ namespace Zoo
 
         public void Work()
         {
-            const string CommandShowAviary = "1";
-            const string CommandShowAquarium = "2";
-            const string CommandShowLions = "3";
-            const string CommandShowPandas = "4";
-            const string CommandExit = "5";
+            const string CommandShowEncluse = "1";
+            const string CommandExit = "2";
 
             bool isWork = true;
-            Console.WriteLine($"Добро пожаловать в зоопарк! В нашем зоопарке {_enclusures.Count} вольеров.");            
+            Console.WriteLine($"Добро пожаловать в зоопарк! В нашем зоопарке {_enclusures.Count} вольеров.");
 
             while (isWork)
             {
-                Console.WriteLine($"Выберите вольер, к которому хотите подойти или введите {CommandExit}, чтобы покинуть зоопарк.");
+                Console.WriteLine($"Нажмите {CommandShowEncluse}, чтобы выбрать вольер, к которому хотите подойти или введите {CommandExit}, чтобы покинуть зоопарк.");
                 ShowAllEncluses();
                 string userInput = Console.ReadLine();
 
                 switch (userInput)
                 {
-                    case CommandShowAviary:
-                        ShowEncluseInfo(userInput);
-                        break;
-
-                    case CommandShowAquarium:
-                        ShowEncluseInfo(userInput);
-                        break;
-
-                    case CommandShowLions:
-                        ShowEncluseInfo(userInput);
-                        break;
-
-                    case CommandShowPandas:
-                        ShowEncluseInfo(userInput);
+                    case CommandShowEncluse:
+                        ShowEncluseInfo();
                         break;
 
                     case CommandExit:
@@ -72,7 +57,7 @@ namespace Zoo
 
         private void CreateEncluses()
         {
-            List<Animal> birds = new List<Animal> { new Animal("Попугай","Мальчик","Чирикает"), new Animal("Утка","Девочка","Крякает")};
+            List<Animal> birds = new List<Animal> { new Animal("Попугай", "Мальчик", "Чирикает"), new Animal("Утка", "Девочка", "Крякает") };
             Enclusure aviary = new Enclusure(birds, "Птичник");
             List<Animal> fish = new List<Animal> { new Animal("Пиранья", "Мальчик", "Злобно булькает"), new Animal("Пиранья", "Девочка", "Булькает") };
             Enclusure aquarium = new Enclusure(fish, "Аквариум");
@@ -90,16 +75,30 @@ namespace Zoo
         {
             for (int i = 0; i < _enclusures.Count; i++)
             {
-                Console.Write(i+ 1+ ")");
+                Console.Write(i + 1 + ")");
                 Console.WriteLine(_enclusures[i].Name);
             }
         }
 
-        private void ShowEncluseInfo(string userInput)
+        private void ShowEncluseInfo()
         {
-            if (int.TryParse(userInput,out int encluseNumber))
+            Console.WriteLine("Выберите вольер, к которому хотите подойти: ");
+            string userInput = Console.ReadLine();
+
+            if (int.TryParse(userInput, out int encluseNumber))
             {
-                _enclusures[encluseNumber - 1].ShowInfo();
+                if (encluseNumber > 0 && encluseNumber <= _enclusures.Count)
+                {
+                    _enclusures[encluseNumber - 1].ShowInfo();
+                }
+                else
+                {
+                    Console.WriteLine("Вольера с таким номером нет в зоопарке...");
+                }
+            }
+            else
+            {
+                Console.WriteLine("Неккоректный ввод...");
             }
         }
     }
